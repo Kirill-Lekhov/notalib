@@ -66,6 +66,20 @@ class SQLAlchemySQLModule:
 	text = SQLAlchemyQuery
 
 
+class CeleryAppControl:
+	@classmethod
+	def inspect(cls) -> None:
+		return None
+
+
+class CeleryApp:
+	control = CeleryAppControl
+
+
+class Celery:
+	current_app = CeleryApp
+
+
 def pytest_configure():
 	settings.configure(
 		USE_I18N=False,
@@ -82,3 +96,4 @@ def pytest_configure():
 	sys.modules["sqlalchemy"] = SQLAlchemyModule
 	sys.modules["sqlalchemy.engine"] = SQLAlchemyEngineModule
 	sys.modules["sqlalchemy.sql"] = SQLAlchemySQLModule
+	sys.modules["celery"] = Celery

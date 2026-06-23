@@ -625,3 +625,15 @@ Sets tags to rows and returns list of groups for filtering.
 #### notalib.tablib.dataset.ExtendedDataset.rename_headers
 
 Renames header labels.
+
+## Tools for Celery
+
+Required packages: [celery](https://pypi.org/project/celery/)
+
+#### notalib.celery.is_task_running
+
+Checks whether a task is running.
+
+#### notalib.celery.wait_complete
+
+Waits for a celery task to complete.
