@@ -400,6 +400,20 @@ is_async_generator(get_numbers)     # False
 is_async_generator(aget_numbers)    # True
 ```
 
+#### notalib.ipaddress.get_real_ip
+
+Returns IP address of remote host.
+
+```python
+from ipaddress import IPv4Address, IPv4Network
+
+
+assert get_real_ip("127.0.0.1", None) == IPv4Address("127.0.0.1")
+assert get_real_ip("127.0.0.1", "192.168.0.1") == IPv4Address("127.0.0.1")
+real_ip = get_real_ip("127.0.0.1", "192.168.0.1", trusted_proxies=(IPv4Network("127.0.0.1"), ))
+assert real_ip == IPv4Address("192.168.0.1")
+```
+
 ## Tools for Pandas
 
 #### notalib.pandas.pandasplus.row_to_dict
