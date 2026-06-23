@@ -428,6 +428,10 @@ number_to_letters(33)        # "AG"
 number_to_letters(123)        # "DS"
 ```
 
+#### notalib.binary_size.SizeHumanizer
+
+Converts size (in bytes) to specified unit.
+
 ## Tools for Pandas
 
 #### notalib.pandas.pandasplus.row_to_dict
