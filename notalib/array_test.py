@@ -1,8 +1,14 @@
-from .array import as_chunks, ensure_iterable, batched
+from .array import as_chunks, ensure_iterable, batched, abatched
+
+from asyncio import run
+from typing import AsyncIterable, AsyncGenerator, TypeVar, List
 
 import pytest
 from hypothesis import given
 from hypothesis.strategies import lists, integers
+
+
+T = TypeVar("T")
 
 
 def _collect(x):
@@ -80,3 +86,28 @@ class TestBatched:
 	def test_errors(self):
 		with pytest.raises(ValueError, match='n must be at least one'):
 			list(batched([], 0))
+
+
+class TestAbatched:
+	def test_normal(self):
+		assert run(self.abatched(self.get_numbers(0), 3)) == []
+		assert run(self.abatched(self.get_numbers(9), 3)) == [(0, 1, 2), (3, 4, 5), (6, 7, 8)]
+		assert run(self.abatched(self.get_numbers(5), 3)) == [(0, 1, 2), (3, 4)]
+
+	def test_errors(self):
+		with pytest.raises(ValueError, match='The batch_size cannot be less than 1'):
+			run(self.abatched(self.get_numbers(10), -1))
+
+	@staticmethod
+	async def get_numbers(count: int) -> AsyncGenerator[int, None]:
+		for i in range(count):
+			yield i
+
+	@staticmethod
+	async def abatched(iterable: AsyncIterable[T], size: int) -> List[T]:
+		result = []
+
+		async for batch in abatched(iterable, size):
+			result.append(batch)
+
+		return result

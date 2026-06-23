@@ -95,6 +95,23 @@ batches = list(batched(generate_numbers(), 5))     # --> [(0, 1, 2, 3, 4), (5, 6
 batches = list(batched("Hello", 2))     # --> [('H', 'e'), ('l', 'l'), ('o',)]
 ```
 
+#### notalib.array.abatched
+
+Batch data from the async iterable into tuples of length n.
+
+```python
+from notalib.array import abatched
+
+
+async def generate_numbers():
+    for i in range(10):
+        yield i
+
+
+batches = [i async for i in abatched(generate_numbers(), 5)]        # --> [(0, 1, 2, 3, 4), (5, 6, 7, 8, 9)]
+batches = [i async for i in abatched(generate_numbers(), 2]     # --> [('H', 'e'), ('l', 'l'), ('o',)]
+```
+
 #### notalib.combinator.Combinator :fire:
 #### notalib.date.parse_month
 #### notalib.date.parse_date

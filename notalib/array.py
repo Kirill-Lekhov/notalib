@@ -1,4 +1,4 @@
-from typing import Iterable, TypeVar, Generator, Tuple
+from typing import Iterable, TypeVar, Generator, Tuple, AsyncIterable, AsyncGenerator
 from itertools import islice
 
 
@@ -31,6 +31,7 @@ def batched(iterable: Iterable[T], n: int) -> Generator[Tuple[T, ...], None, Non
 
 	Notes:
 		* Src: https://docs.python.org/3.12/library/itertools.html#itertools.batched
+		* See `abatched` if you looking for async version.
 
 	Examples:
 		>>> list(batched('ABCDEFG', 3))
@@ -45,3 +46,30 @@ def batched(iterable: Iterable[T], n: int) -> Generator[Tuple[T, ...], None, Non
 	while batch:
 		yield batch
 		batch = tuple(islice(it, n))
+
+
+async def abatched(iterable: AsyncIterable[T], batch_size: int) -> AsyncGenerator[Tuple[T, ...], None]:
+	"""
+	Divides an asynchronous iterable into equal parts of a given size.
+
+	Args:
+		iterable: An iterable to be divided.
+		batch_size: Size of one batch.
+
+	Note:
+		* See `batched` if you looking for sync version.
+	"""
+	if batch_size < 1:
+		raise ValueError("The batch_size cannot be less than 1")
+
+	buffer = []
+
+	async for i in iterable:
+		buffer.append(i)
+
+		if len(buffer) == batch_size:
+			yield tuple(buffer)
+			buffer.clear()
+
+	if buffer:
+		yield tuple(buffer)
