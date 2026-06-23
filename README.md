@@ -376,6 +376,30 @@ with open("<file_path>", mode="rb") as file:
         ...
 ```
 
+#### notalib.async_toolkit.is_async_generator
+
+Returns `True` if passed function is an asynchronous generator, otherwise `False`.
+
+_:warning: Experimental API. Tested only with generators with specified return type._
+
+```python
+from typing import Generator, AsyncGenerator
+
+
+def get_numbers() -> Generator[int, None, None]:
+    for i in range(10):
+        yield i
+
+
+async def aget_numbers() -> AsyncGenerator[int, None, None]:
+    for i in range(10):
+        yield i
+
+
+is_async_generator(get_numbers)     # False
+is_async_generator(aget_numbers)    # True
+```
+
 ## Tools for Pandas
 
 #### notalib.pandas.pandasplus.row_to_dict
