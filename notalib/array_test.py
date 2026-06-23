@@ -1,7 +1,7 @@
-from .array import as_chunks, ensure_iterable, batched, abatched
+from .array import as_chunks, ensure_iterable, batched, abatched, achain
 
 from asyncio import run
-from typing import AsyncIterable, AsyncGenerator, TypeVar, List
+from typing import AsyncIterable, AsyncGenerator, TypeVar, List, Iterable, Union
 
 import pytest
 from hypothesis import given
@@ -111,3 +111,28 @@ class TestAbatched:
 			result.append(batch)
 
 		return result
+
+
+class AsyncIterator:
+	def __init__(self):
+		self.count = 0
+
+	def __aiter__(self):
+		return self
+
+	async def __anext__(self):
+		if self.count >= 10:
+			raise StopAsyncIteration
+
+		self.count += 1
+		return self.count
+
+
+def test_achain():
+	async def _achain(*iterables: Union[AsyncIterable[T], Iterable[T]]) -> List[T]:
+		return [i async for i in achain(*iterables)]
+
+	assert run(_achain([])) == []
+	assert run(_achain((-2, -1, 0), AsyncIterator(), [11, 12, 13])) == [
+		-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+	]

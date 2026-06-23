@@ -1,4 +1,4 @@
-from typing import Iterable, TypeVar, Generator, Tuple, AsyncIterable, AsyncGenerator
+from typing import Iterable, TypeVar, Generator, Tuple, AsyncIterable, AsyncGenerator, Union
 from itertools import islice
 
 
@@ -73,3 +73,16 @@ async def abatched(iterable: AsyncIterable[T], batch_size: int) -> AsyncGenerato
 
 	if buffer:
 		yield tuple(buffer)
+
+
+async def achain(*iterables: Union[AsyncIterable[T], Iterable[T]]) -> AsyncGenerator[T, None]:
+	"""
+	Like itertools.chain, but supports asynchronous iterators.
+	"""
+	for iterable in iterables:
+		if isinstance(iterable, AsyncIterable):
+			async for item in iterable:
+				yield item
+		else:
+			for item in iterable:
+				yield item

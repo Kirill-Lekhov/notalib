@@ -112,6 +112,10 @@ batches = [i async for i in abatched(generate_numbers(), 5)]        # --> [(0, 1
 batches = [i async for i in abatched(generate_numbers(), 2]     # --> [('H', 'e'), ('l', 'l'), ('o',)]
 ```
 
+#### notalib.array.achain
+
+Like itertools.chain, but supports asynchronous iterators.
+
 #### notalib.combinator.Combinator :fire:
 #### notalib.date.parse_month
 #### notalib.date.parse_date
