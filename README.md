@@ -414,6 +414,16 @@ real_ip = get_real_ip("127.0.0.1", "192.168.0.1", trusted_proxies=(IPv4Network("
 assert real_ip == IPv4Address("192.168.0.1")
 ```
 
+#### notalib.table.number_to_letters
+
+Converts number to collection of letters (excel-like representation).
+
+```python
+number_to_letters(1)        # "A"
+number_to_letters(33)        # "AG"
+number_to_letters(123)        # "DS"
+```
+
 ## Tools for Pandas
 
 #### notalib.pandas.pandasplus.row_to_dict
