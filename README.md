@@ -483,6 +483,15 @@ class SomeView(...):
             return get_stream_bytes_response(file, request, content_type="<file_content_type>")
 ```
 
+## Django/Channels
+
+#### notalib.django.channels.send_message_to_group
+
+Sends message to specific group.
+
+#### notalib.django.channels.send_worker_task
+
+Sends task message to specific worker.
 
 ## <s>Django/Clickhouse</s>
 

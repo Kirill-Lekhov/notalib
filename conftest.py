@@ -80,6 +80,14 @@ class Celery:
 	current_app = CeleryApp
 
 
+class ChannelsLayers:
+	get_channel_layer = None
+
+
+class Channels:
+	layers = ChannelsLayers
+
+
 def pytest_configure():
 	settings.configure(
 		USE_I18N=False,
@@ -97,3 +105,5 @@ def pytest_configure():
 	sys.modules["sqlalchemy.engine"] = SQLAlchemyEngineModule
 	sys.modules["sqlalchemy.sql"] = SQLAlchemySQLModule
 	sys.modules["celery"] = Celery
+	sys.modules["channels"] = Channels
+	sys.modules["channels.layers"] = ChannelsLayers
