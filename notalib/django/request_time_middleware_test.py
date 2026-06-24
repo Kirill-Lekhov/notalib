@@ -9,6 +9,10 @@ from django.http.request import HttpRequest
 from django.http.response import HttpResponse
 
 
+def simple_view(request: HttpRequest):
+	return HttpResponse()
+
+
 class TestRequestTimeLoggingMiddleware:
 	def test_log_message(self, capsys):
 		dt = datetime(2024, 1, 1, 12, 30, 30, 500, tzinfo=timezone.utc)
@@ -25,9 +29,8 @@ class TestRequestTimeLoggingMiddleware:
 				captured = capsys.readouterr()
 				assert captured.out == f"2024-01-01T12:30:30.000500+00:00 TAG        {uuid}  1 /dev/null +0:00:00 MESSAGE\n"
 
-
 	def test_process_request(self):
-		middleware = RequestTimeLoggingMiddleware()
+		middleware = RequestTimeLoggingMiddleware(simple_view)
 		request = HttpRequest()
 		fake_log_message = FakeFunction()
 
@@ -38,7 +41,7 @@ class TestRequestTimeLoggingMiddleware:
 		assert fake_log_message.last_call_args == (request, 'request ')
 
 	def test_process_response(self):
-		middleware = RequestTimeLoggingMiddleware()
+		middleware = RequestTimeLoggingMiddleware(simple_view)
 		request = HttpRequest()
 		response = HttpResponse()
 		fake_log_message = FakeFunction()
